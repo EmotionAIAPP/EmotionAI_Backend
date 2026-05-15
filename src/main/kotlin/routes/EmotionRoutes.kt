@@ -2,6 +2,7 @@ package com.example.routes
 
 import com.example.models.EmotionRequest
 import com.example.models.ErrorResponse
+import com.example.rag.domain.RagService
 import com.example.repository.EmotionRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
@@ -11,7 +12,7 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.*
 
-fun Route.emotionRoutes() {
+fun Route.emotionRoutes(ragService: RagService) {
 
     val repository = EmotionRepository()
 
@@ -42,6 +43,10 @@ fun Route.emotionRoutes() {
                 if (created == null) {
                     call.respond(HttpStatusCode.BadRequest, ErrorResponse("Sesión no válida para este usuario"))
                 } else {
+                    // Sincronizar con el RAG de la IA
+                    val description = "El usuario se siente ${created.label} con una confianza del ${(created.confidence * 100).toInt()}% en la sesión ${created.sessionId}."
+                    ragService.ingestData(description, userId)
+
                     call.respond(HttpStatusCode.Created, created)
                 }
             }

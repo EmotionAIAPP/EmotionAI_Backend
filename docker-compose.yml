@@ -7,13 +7,14 @@ services:
       - DB_URL=jdbc:postgresql://db:5432/emotionai
       - DB_USER=postgres
       - DB_PASSWORD=admin123
+      - OLLAMA_HOST=http://ollama:11434
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
 
   db:
-    image: postgres:16-alpine
+    image: ankane/pgvector:v0.5.1
     ports:
       - "5432:5432"
     environment:
@@ -28,6 +29,14 @@ services:
       timeout: 5s
       retries: 5
 
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
   adminer:
     image: adminer:latest
     ports:
@@ -38,3 +47,4 @@ services:
 
 volumes:
   postgres_data:
+  ollama_data:

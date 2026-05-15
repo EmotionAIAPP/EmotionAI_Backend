@@ -36,4 +36,10 @@ dependencies {
 
     implementation("io.ktor:ktor-server-auth-jvm:2.3.12")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:2.3.12")
+
+    // RAG & LLM
+    implementation("dev.langchain4j:langchain4j:0.31.0")
+    implementation("dev.langchain4j:langchain4j-ollama:0.31.0")
+    implementation("dev.langchain4j:langchain4j-pgvector:0.31.0")
+    implementation("dev.langchain4j:langchain4j-embeddings-all-minilm-l6-v2:0.31.0")
 }

@@ -7,7 +7,7 @@ RUN chmod +x gradlew
 RUN ./gradlew buildFatJar --no-daemon
 
 # Paso 2: Ejecutar
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/build/libs/*-all.jar app.jar
 EXPOSE 8080

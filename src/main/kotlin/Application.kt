@@ -1,6 +1,8 @@
 package com.example
 
 import com.example.database.DatabaseFactory
+import com.example.rag.domain.RagService
+import com.example.rag.web.ragRouting
 import com.example.routes.authRoutes
 import com.example.routes.emotionRoutes
 import com.example.routes.sessionRoutes
@@ -25,10 +27,13 @@ fun main() {
         configureSecurity()
         DatabaseFactory.init()
 
+        val ragService = RagService()
+
         routing {
             authRoutes()
             sessionRoutes()
-            emotionRoutes()
+            emotionRoutes(ragService)
+            ragRouting(ragService)
         }
     }.start(wait = true)
 }
